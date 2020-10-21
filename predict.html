@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
+    <title>flask testing............</title>
+    <style>
+        * {
+            font-size: 30px;
+        }
+    </style>
+    <script type="text/javascript">
+        let base64Image;
+        function pgo() {
+            let message = {
+                image:base64Image
+            }
+            // console.log(message)
+            $.post("/predict",JSON.stringify(message),
+                function(response){
+                    $("#prediction").text(response.prediction.possibily),
+                    $("#apple").text(response.prediction.apple),
+                    $("#bean").text(response.prediction.bean),
+                    $("#cabbage").text(response.prediction.cabbage),
+                    $("#carrot").text(response.prediction.carrot),
+                    $("#cauliflower").text(response.prediction.cauliflower),
+                    $("#cucumber").text(response.prediction.cucumber),
+                    $("#eggplant").text(response.prediction.eggplant),
+                    $("#mashroom").text(response.prediction.mashroom),
+                    $("#pitaya").text(response.prediction.pitaya),
+                    console.log(response)
+                });
+        }
+
+        function file_change(){
+            let reader = new FileReader();
+            reader.onload = function(e){
+                let dataURL = reader.result;
+                $('#selected-image').attr("src",dataURL);
+                base64Image = dataURL.replace("data:image/png;base64,","");
+                console.log(base64Image);
+            }
+            reader.readAsDataURL($("#image-selector")[0].files[0]);
+            // $("#prediction").text("123");
+        }
+
+    </script>
+</head>
+<body>
+    <input id="image-selector" type="file" onchange="file_change()"/>
+    <button id="predict-button" type="submit" onclick="pgo()">Predict</button>
+    <p style="font-weight: bold">Predictions</p>
+    <p>
+        Possibily: <span id="prediction"></span><br>
+        apple: <span id="apple"></span><br>
+        bean: <span id="bean"></span><br>
+        cabbage: <span id="cabbage"></span><br>
+        carrot: <span id="carrot"></span><br>
+        cauliflower: <span id="cauliflower"></span><br>
+        cucumber: <span id="cucumber"></span><br>
+        eggplant: <span id="eggplant"></span><br>
+        mashroom: <span id="mashroom"></span><br>
+        pitaya: <span id="pitaya"></span><br>
+
+    </p>
+    <img id="selected-image" src="" width="224px" height="224px"/>
+
+</body>
+</html>
